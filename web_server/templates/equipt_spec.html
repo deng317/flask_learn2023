@@ -1,0 +1,32 @@
+{% extends "general_layout_without_side_nav.html" %}
+{% block content %}
+    <form action="{{ url_for('equipment_spec') }}" method="POST">
+        {#        {{ form.hidden_tag() }}#}
+        {#        <fieldset class="form-group">#}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col" class="col-md-1">NO.</th>
+                <th scope="col" class="col-md-3">Items</th>
+                <th scope="col" class="col-md-6">Specification</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in range(posts|length) %}
+                <tr>
+                    <th scope="row">{{ i|int+1 }}</th>
+                    <td><input class="form-control form-control-lg" type="text" id="title"
+                               name="title-{{ posts[i].id }}"
+                               value="{{ posts[i].title }}"></td>
+                    <td><textarea class="form-control form-control-lg" id="content"
+                                  name="content-{{ posts[i].id }}">{{ posts[i].content }}</textarea></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {#        </fieldset>#}
+        <div class="form-group">
+            <input class="btn btn-outline-info" id="submit" name="submit" type='submit' value="提交">
+        </div>
+    </form>
+{% endblock %}

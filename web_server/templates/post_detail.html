@@ -1,0 +1,55 @@
+{% extends "general_layout.html" %}
+{% block content %}
+
+    <article class="media content-section">
+        <div class="media-left">
+            <img class="rounded-circle account-img"
+                 src="{{ url_for('static',filename='icon/'+post.author.image_file) }}">
+        </div>
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2"
+                   href="{{ url_for('user_posts',user_name=post.author.username) }}">【{{ post.author.username }}】</a>
+                <small class="text-muted">发表于：{{ post.post_time.strftime("%Y-%m-%d %H:%M:%S") }}</small>
+                {% if post.author == current_user %}
+                    <a class="btn btn-secondary btn-sm m-1" type="submit"
+                       href="{{ url_for('post_update',post_id=post.id) }}">更新文章</a>
+                    {#                添加删帖功能，删除要慎重，增加弹出按钮#}
+                    <button class="btn btn-danger btn-sm m-1" type="button" data-bs-toggle="modal"
+                            data-bs-target="#deletePostmodal">删除文章
+                    </button>
+                {% endif %}
+                <a class="btn btn-sm btn-info" type="submit" href="{{ url_for('index') }}">点我返回</a>
+            </div>
+            <h2 class="article-title" style="text-align: center">{{ post.title|center }}</h2>
+            {% for par in post.content.split('\n') %}
+                <p class="article-content">{{ par }}</p>
+            {% endfor %}
+            <a class="btn btn-sm btn-info" type="submit" href="{{ url_for('index') }}">点我返回</a>
+        </div>
+    </article>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deletePostmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">正在删除文章"{{ post.title }}"</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-danger">
+                    Danger!!!, 文章删除后无法找回，确定要删除吗？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">我再想想</button>
+                    {#                    <a class="btn btn-primary" href="{{ url_for('delete_post',post_id=post.id) }}">确定删除</a>#}
+                    <form action="{{ url_for('delete_post',post_id=post.id) }}" method="Post">
+                        <input class="btn btn-primary" type="submit" value="确定删除">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

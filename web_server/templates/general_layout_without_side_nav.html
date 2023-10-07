@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+        <title>CH Portal-{{ title }}</title>
+    {% else %}
+        <title>CH Portal</title>
+    {% endif %}
+    <link type="text/css" href="{{ url_for('static',filename='CSS/bootstrap.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ url_for('static',filename='CSS/main.css') }}" rel="stylesheet">
+    {#    <link type="text/css" href="{{ url_for('static',filename='CSS/bootstrap3.4.min.css') }}" rel="stylesheet">#}
+
+</head>
+<body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel">
+        <div class="container">
+            <div class="nav navbar-nav my-sm-auto ms-0">
+                <a class="navbar-brand my-sm-auto" href="{{ url_for('index') }}"><img
+                        class="img-fluid img-thumbnail site-logo-img"
+                        src="{{ url_for('static',filename='logo/CH.png') }}"
+                        alt="mdo"></a>
+            </div>
+
+            <button class="navbar-toggler me-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <div class="navbar-nav me-auto me-0">
+                    <a class="nav-pills nav-link" href="{{ url_for('index') }}">主页</a>
+                    <a class="nav-pills nav-link" href="/">相册</a>
+                    <a class="nav-pills nav-link" href="{{ url_for('about') }}">关于</a>
+                    <a class="nav-pills nav-link" href="{{ url_for('users') }}">用户</a>
+                </div>
+
+
+                <!-- Navbar Right Side -->
+                <div class="nav navbar-nav mr-auto mr-0">
+                    {% if current_user.is_authenticated %}
+                        <a class="nav-pills nav-link"
+                           href="{{ url_for('account') }}">欢迎【{{ current_user.username }}】<img
+                                class='rounded-circle'
+                                src="{{ url_for('static',filename='icon/'+current_user.image_file) }}" alt="mdo"
+                                width="20"
+                                height="20" class="rounded-circle"></a>
+                        <a class="nav-pills nav-link" href="{{ url_for('logout') }}">登出</a>
+                        <a class="nav-pills nav-link" href="{{ url_for('new_post') }}">我要发帖</a>
+                    {% else %}
+                        <a class="nav-pills nav-link" href="{{ url_for('login') }}">登录</a>
+                        <a class="nav-pills nav-link" href="{{ url_for('register') }}">注册</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main role="main" class="container">
+    {#主显示区域#}
+    <div class="row">
+        <div class="col-md-10">
+
+            {#        flash message 代码#}
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category,message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+        {% block side_nav %}
+        {% endblock side_nav %}
+        {#以下为侧边栏位#}
+        {#        <div class="col-md-2">#}
+        {#            <div class="content-section">#}
+        {#                <h3>导航栏</h3>#}
+        {#                <p class='text-muted'>这里可以写你想要的内容#}
+        {#                <ul class="list-group">#}
+        {#                    <li class="list-group-item list-group-item-light">最新文章</li>#}
+        {#                    <li class="list-group-item list-group-item-light">公告</li>#}
+        {#                    <li class="list-group-item list-group-item-light">日历</li>#}
+        {#                    <li class="list-group-item list-group-item-light">其他</li>#}
+        {#                </ul>#}
+        {#                </p>#}
+        {#            </div>#}
+        {#        </div>#}
+    </div>
+</main>
+<script src="{{ url_for('static',filename='JS/bootstrap.bundle.js') }}" type="text/javascript"></script>
+{#<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"#}
+{#        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"#}
+{#        crossorigin="anonymous"></script>#}
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"#}
+{#        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"#}
+{#        crossorigin="anonymous"></script>#}
+</body>
+</html>

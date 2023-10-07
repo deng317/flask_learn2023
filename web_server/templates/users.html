@@ -1,0 +1,21 @@
+{% extends "general_layout.html" %}
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">NO.</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in range(users|length) %}
+            <tr>
+                <th scope="row">{{ i|int+1 }}</th>
+                <td>{{ users[i].username }}</td>
+                <td>{{ users[i].email }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
